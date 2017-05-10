@@ -1,0 +1,15 @@
+{
+  "name": "ws17-ex1-news",
+  "version": "1.0.0",
+  "description": "Web service 2017 - Ex1 - News data",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tom Goldberg",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2"
+  }
+}

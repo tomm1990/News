@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Web Service 2017 - Express1 - News</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<div id="wrapper">
+    <header>
+        <h2>Web Service Ex1 - Express - News system API</h2>
+    </header>
+    <main>
+        <section>
+            <h1>getAllIsraelNews</h1>
+            <h2>Show all Israel news</h2>
+            <h3>Provides json full of data which represent all Israeli Articles</h3>
+            <p>
+            @type<br>
+                METHOD : get<br><br>
+            
+             @param<br>
+               [no params]<br><br>
+            
+             @return<br>
+               [no returns]<br><br>
+            
+             @i.e<br>
+               <a href="https://ws17ex1goldnews.herokuapp.com/getAllIsraelNews">https://ws17ex1goldnews.herokuapp.com/getAllIsraelNews</a><br><br>
+            </p>
+        </section>
+        
+        
+        
+        <section>
+            <h1>getNewsByRateBiggerThan</h1>
+            <h2>Show news by rate</h2>
+            <h3>Provides json full of data which represent all articles rated greater than the specified parameter</h3>
+            <p>
+            @type<br>
+                METHOD : post<br><br>
+            
+             @param<br>
+                rate // int value<br><br>
+            
+             @return<br>
+               [no returns]<br><br>
+            
+             @i.e<br>
+               <a href="https://ws17ex1goldnews.herokuapp.com/getNewsByRateBiggerThan">https://ws17ex1goldnews.herokuapp.com/getNewsByRateBiggerThan</a><br>[rate : 8]<br>
+            </p>
+        </section>
+        
+        <section>
+            <h1>getNewsByTitleAndRate</h1>
+            <h2>Show news by title and rate</h2>
+            <h3>Provides json full of data which represent all articles with the specified title and rate</h3>
+            <p>
+            @type<br>
+                METHOD : get<br><br>
+            
+             @param<br>
+                title // String that specifies the article title<br>
+                rate  // int value<br><br>
+            
+             @return<br>
+               [no returns]<br><br>
+            
+             @i.e<br>
+               <a href="https://ws17ex1goldnews.herokuapp.com/getNewsByTitleAndRate/Israel/10">https://ws17ex1goldnews.herokuapp.com/getNewsByTitleAndRate/Israel/10</a><br><br>
+            </p>
+        </section>
+        
+        
+        
+    </main>
+    <footer>
+    
+    </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+{
+  "news" : [
+    {
+      "id" : 301,
+      "title" : "Israel",
+      "lastArticle" : "10/5",
+      "subTitle" : "Simulated shooting of terrorist at school raises ire..",
+      "writer" : "Raanan Ben Zur",
+      "rate" : 10
+    },
+    {
+      "id" : 302,
+      "title" : "Israel",
+      "lastArticle" : "3/5",
+      "subTitle" : "Unexploded IAF decoy flares discovered near Gaza",
+      "writer" : "Raanan Ben Zur",
+      "rate" : 9
+    },
+    {
+      "id" : 303,
+      "title" : "Israel",
+      "lastArticle" : "10/5",
+      "subTitle" : "30 Amona families still without permanent homes",
+      "writer" : "Elisha Ben-Kimon",
+      "rate" : 10
+    },
+    {
+      "id" : 304,
+      "title" : "Israel",
+      "lastArticle" : "10/5",
+      "subTitle" : "Simulated shooting of terrorist at school raises ire..",
+      "writer" : "Raanan Ben Zur",
+      "rate" : 6
+    },
+    {
+      "id" : 305,
+      "title" : "World",
+      "lastArticle" : "9/5",
+      "subTitle" : "Press freedom under attack around world, Israel ",
+      "writer" : "The Media Line",
+      "rate" : 8
+    },
+    {
+      "id" : 306,
+      "title" : "Culture",
+      "lastArticle" : "1/5",
+      "subTitle" : "Smurfette is shunned in Israeli ultra-Orthodox city",
+      "writer" : "Associated Press,",
+      "rate" : 5
+    },
+    {
+      "id" : 307,
+      "title" : "Music",
+      "lastArticle" : "10/5",
+      "subTitle" : "Baby, baby, baby—Oh no! Not now! Haredi woman goes into labor at Bieber concert‏",
+      "writer" : "Ran Boker",
+      "rate" : 14
+    }
+  ]
+}

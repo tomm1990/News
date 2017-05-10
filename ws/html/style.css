@@ -1,0 +1,34 @@
+*{
+    margin:0;
+    padding: 0;
+}
+
+body{
+    
+}
+
+#wrapper{
+    border: 1px solid red;
+    margin: 0 auto;
+    width: 80%;
+    padding: 3%;
+    font-family: tahoma, arial;
+
+}
+
+header, main, footer , section{
+    border : 1px solid black;
+        padding: 3%;
+}
+
+.clear{
+    clear: both;
+}
+
+header{
+    padding: 3%;
+}
+
+section{
+    
+}
