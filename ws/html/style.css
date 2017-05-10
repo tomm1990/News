@@ -4,21 +4,31 @@
 }
 
 body{
-    
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#7d7e7d+0,0e0e0e+64 */
+background: #7d7e7d; /* Old browsers */
+background: -moz-linear-gradient(-45deg, #7d7e7d 0%, #0e0e0e 64%); /* FF3.6-15 */
+background: -webkit-linear-gradient(-45deg, #7d7e7d 0%,#0e0e0e 64%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(135deg, #7d7e7d 0%,#0e0e0e 64%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
 #wrapper{
-    border: 1px solid red;
+    font-weight: 100;
+    color : #fff;
     margin: 0 auto;
     width: 80%;
     padding: 3%;
-    font-family: tahoma, arial;
+    box-shadow: 0px 20px 15px 15px #888888;
+    font-family: tahoms, arial;
 
 }
 
 header, main, footer , section{
-    border : 1px solid black;
-        padding: 3%;
+    padding: 3%;
+}
+
+main{
+
 }
 
 .clear{
@@ -26,9 +36,37 @@ header, main, footer , section{
 }
 
 header{
-    padding: 3%;
+    padding: 1%;
+}
+
+header >h2 , hr{
+    color : #4cd481;
+    border-color: #4cd481;
+}
+
+.space{
+    color : #000;
+    margin-left: 2%;
 }
 
 section{
-    
+}
+
+section h1{
+    color : #ffffff;
+}
+
+section h1,h2,h3,p{
+    margin : 2%;
+}
+
+section p{
+    padding: 2%;
+    background: #606060;
+}
+
+section p a{
+    margin-left: 3%;
+    text-decoration: none;
+    color : #4cd481;
 }

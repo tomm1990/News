@@ -18,7 +18,7 @@ const data = require('./data/news.json');
 *   http://localhost:3000/getAllIsraelNews
  */
 exports.getAllIsraelNews = (req,res)=>{
-    console.log('getAllIsraelNews');
+    console.log('getAllIsraelNews() was called');
     var jsonObj = {},
         key = 'Israel News';
     jsonObj[key] = [];
@@ -54,11 +54,12 @@ exports.getAllIsraelNews = (req,res)=>{
  *   [rate][8]
  */
 exports.getNewsByRateBiggerThan = (req,res)=>{
-    var rateToSearch = req.body.rate;
-    console.log('req.body.rate -> '+rateToSearch);
-    var jsonObj = {},
+    var rateToSearch = req.body.rate,
+        jsonObj = {},
         key = 'News rate bigger than '+rateToSearch;
     jsonObj[key] = [];
+    console.log('getNewsByRateBiggerThan() was called');
+    console.log('-- param[0] : '+rateToSearch);
     for(let i in data.news){
         if(data.news[i].rate>rateToSearch){
             jsonObj[key].push({
@@ -91,12 +92,13 @@ exports.getNewsByRateBiggerThan = (req,res)=>{
  */
 exports.getNewsByTitleAndRate = (req,res)=>{
     var title = req.params.title,
-        rate = req.params.rate;
-    console.log('req.params.category -> '+title);
-    console.log('req.params.rate -> '+rate);
-    var jsonObj = {},
+        rate = req.params.rate,
+        jsonObj = {},
         key = 'Title '+title+' AND rate '+rate;
     jsonObj[key] = [];
+    console.log('getNewsByTitleAndRate() was called');
+    console.log('-- param[0] : '+title);
+    console.log('-- param[1] : '+rate);
     for(let i in data.news){
         if(data.news[i].rate==rate
             && data.news[i].title==title){
@@ -114,5 +116,6 @@ exports.getNewsByTitleAndRate = (req,res)=>{
 };
 
 exports.finalize = (json,key,res) => {
+    console.log('finalize() was called');
     res.status(200).json(!json[key].length?{"err":"not found"}:json);
-}
+};

@@ -1,6 +1,6 @@
 
 /*
- default settings
+* default settings
  */
 const http = require('http'),
     express = require('express'),
@@ -11,7 +11,9 @@ const http = require('http'),
     path = require("path"),
     mainRoute = __dirname+'/html';
 
-
+/*
+* app usages
+ */
 app.use(express.static(mainRoute))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
@@ -19,7 +21,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 /*
 * default rout
  */
-app.get('/', (req,res,next) => {
+app.get('*', (req,res,next) => {
     res.sendFile(path.join((__dirname,'index.html')));
     req.next();
 });
@@ -80,5 +82,5 @@ app.get('/getNewsByTitleAndRate/:title/:rate',controller.getNewsByTitleAndRate);
 
 
 app.listen(port , () => {
-    console.log('listetning to '+port);
+    console.log('listening to '+port);
 });
