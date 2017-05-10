@@ -4,7 +4,8 @@
   "description": "Web service 2017 - Ex1 - News data",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ws/server.js"
   },
   "author": "Tom Goldberg",
   "license": "ISC",
