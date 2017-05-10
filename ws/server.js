@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 /*
 * default rout
  */
-app.get('*', (req,res,next) => {
+app.get('/', (req,res,next) => {
     res.sendFile(path.join((__dirname,'index.html')));
     req.next();
 });
