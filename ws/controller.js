@@ -1,6 +1,318 @@
 'use strict';
 
-const data = require('./data/news.json');
+const data = require('./data/news.json'),
+    mongoose = require('mongoose'),
+    consts = require('./data/consts.js'),
+    Reporter = require('./defineSchema/Reporter'),
+    //Repo = require('./class/ReporterClass'),
+    Vod = require('./defineSchema/Vod'),
+    options = {
+        server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+        replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
+    }
+    //reporterObj = new Repo();
+
+
+// mongoose.Promise = global.Promise;
+mongoose.connect(consts.MLAB_KEY,options);
+// const conn = mongoose.connection;   //get default connection
+
+/*
+ * Gets all VOD's rated over {rate} input
+ *
+ * @type
+ *   POST
+ *
+ * @param
+ *   rate : Number {0 < id < 15}
+ *
+ *
+ * @return
+ *   json
+ *
+ * @i.e
+ *   http://localhost:3000/getVodRatedHigherThan
+ *   [rate][8]
+ */
+exports.getVodRatedHigherThan = (req,res)=>{
+    var _rate = req.body.rate ? req.body.rate : 0;
+    if(_rate<=0 || _rate > 15 ) {
+        res.status(200).json({ "err" : "wrong input" });
+        return;
+    }
+    Vod.find({
+        rate : { $gt : _rate }
+    }, (err,vod) => {
+        if(err){
+            console.log(`err -> ${err}`);
+            res.status(200).json(`{ err : ${err}`);
+        } else {
+            console.log(vod);
+            res.status(200).json(vod);
+        }
+    });
+};
+
+/*
+ * Gets all Reporters's from a specific VOD ID
+ *
+ * @type
+ *   POST
+ *
+ * @param
+ *   id : Number {501 < id < 505}
+ *
+ *
+ * @return
+ *   json
+ *
+ * @i.e
+ *   http://localhost:3000/getReporterByVodID
+ *   [id][501]
+ */
+exports.getReporterByVodID = (req,res)=>{
+    var _vod,
+        _id = req.body.id?req.body.id:0;
+    if(_id > 505 || _id < 501){
+        res.status(200).json({ "err" : "wrong input" });
+        return;
+    }
+    Vod.find({
+        id : _id
+    }, (err,vod)=>{
+        if(err){
+            console.log(`err -> ${err}`);
+            res.status(200).json(`{ err : ${err}`);
+        } else {
+            console.log(vod);
+            _vod = vod;
+            console.log(`rep.vod -> ${ _vod[0].reporter }` );
+            Reporter.find({
+                id : { $in : _vod[0].reporter }
+            }, (err,reporter)=>{
+                if(err) {
+                    console.log(`err -> ${err}`);
+                    res.status(200).json(`{ err : ${err}`);
+                }
+                else {
+                    console.log(reporter);
+                    res.status(200).json(reporter);
+                }
+            });
+        }
+    });
+};
+
+
+/*
+ * Gets all VOD's from a specific reporter id
+ *
+ * @type
+ *   POST
+ *
+ * @param
+ *   id : Number {301 < id < 310}
+ *
+ *
+ * @return
+ *   json
+ *
+ * @i.e
+ *   http://localhost:3000/getVodByReporterID
+ *   [id][303]
+ */
+exports.getVodByReporterID = (req,res)=>{
+    var rep,
+     _id = req.body.id?req.body.id:0;
+    if(_id > 310 || _id < 301) {
+        res.status(200).json({ "err" : "wrong input" });
+        return;
+    }
+    Reporter.find({
+        id : _id
+            }, (err,reporter)=>{
+                if(err){
+                    console.log(`err -> ${err}`);
+                    res.status(200).json(`{ err : ${err}`);
+                } else {
+                    console.log(reporter);
+                    rep = reporter;
+                    console.log(`rep.vod -> ${ rep[0].vod }` );
+                    Vod.find({
+                        id : { $in : rep[0].vod }
+                    }, (err,vod)=>{
+                        if(err) {
+                            console.log(`err -> ${err}`);
+                            res.status(200).json(`{ err : ${err}`);
+                        }
+                        else {
+                            console.log(vod);
+                            res.status(200).json(vod);
+                        }
+                    });
+                }
+            });
+};
+
+
+/*
+ * Save new vod
+ *
+ * @type
+ *   POST
+ *
+ * @param
+ *   id : Number {510 < id < 600}
+ *   title : String
+ *   subTitle : String
+ *   rate : Number
+ *   url : String
+ *
+ * @return
+ *   json
+ *
+ * @i.e
+ *   http://localhost:3000/saveNewVod
+ *   [id][510]
+ *   [title][Being Solomon]
+ *   [subTitle][A new Israeli movie aiming to grow]
+ *   [rate][9]
+ *   [url][http://www.ynetnews.com/articles/0,7340,L-4964681,00.html]
+ */
+exports.saveNewVod = (req,res)=> {
+    // console.log(`id : ${req.body.id}`);
+    // console.log(`title : ${req.body.title}`);
+    // console.log(`subTitle : ${req.body.subTitle}`);
+    // console.log(`rate : ${req.body.rate}`);
+    var _id = req.body.id ? req.body.id : exports.finalize(0,0,res) ,
+        _title = req.body.title ? req.body.title : exports.finalize(0,0,res) ,
+        _subTitle = req.body.subTitle ? req.body.subTitle : exports.finalize(0,0,res) ,
+        _rate = req.body.rate ? req.body.rate : exports.finalize(0,0,res),
+        _url = req.body.url ? req.body.url : exports.finalize(0,0,res),
+        newVod = new Vod({
+            id : _id,
+            title : _title,
+            subTitlte : _subTitle,
+            rate : _rate,
+            url : _url,
+            //reporter : []
+        });
+
+    console.log(`_id : ${_id}\n_title : ${_title}\n_subTitle : ${_subTitle}\n_rate : ${_rate}\n_url : ${_url}`);
+
+    newVod.save(
+        (err) => {
+            if(err) console.log(`err ${err}`);
+            else {
+                // TODO : fix res.end()
+                res.status(200).json({"ok":"document saved"});
+                //res.end();
+                //next();
+                console.log(`document saved`);
+            }
+            mongoose.disconnect();
+        }
+    );
+};
+
+
+/*
+ * Save new reporter
+ *
+ * @type
+ *   POST
+ *
+ * @param
+ *   id : Number {310 < id < 400}
+ *   name : String
+ *   proficiency : String
+ *   age : Number
+ *
+ * @return
+ *   json
+ *
+ * @i.e
+ *   http://localhost:3000/saveNewReporter
+ *   [id][310]
+ *   [name][Tom Goldberg]
+ *   [proficiency][Sports]
+ *   [age][27]
+ */
+exports.saveNewReporter = (req,res,next)=> {
+    var _id = req.body.id ? req.body.id : exports.finalize(0,0,res) ,
+        _name = req.body.name ? req.body.name : exports.finalize(0,0,res) ,
+        _proficiency = req.body.proficiency ? req.body.proficiency : exports.finalize(0,0,res) ,
+        _age = req.body.age ? req.body.age : exports.finalize(0,0,res),
+        newReporter = new Reporter({
+            id : _id,
+            name : _name,
+            proficiency : _proficiency,
+            age : _age,
+            //vod : []
+    });
+
+    console.log(`_id : ${_id}\n_name : ${_name}\n_proficiency : ${_proficiency}\n_age : ${_age}`);
+
+    newReporter.save(
+        (err) => {
+            if(err) console.log(`err ${err}`);
+            else {
+                // TODO : fix res.end()
+                res.status(200).json({"ok":"document saved"});
+                res.end();
+                console.log(`document saved`);
+            }
+            mongoose.disconnect();
+        }
+    );
+};
+
+
+/*
+ * Gets all reporters
+ *
+ * @type
+ *   METHOD : get
+ *
+ * @param
+ *   [no params]
+ *
+ * @return
+ *   json
+ *
+ * @i.e
+ *   http://localhost:3000/getAllReporters
+ */
+exports.getAllReporters = (req,res)=>{
+    // reporterObj.getAllReporters().then(
+    //     value=> {
+    //         if(value.length<=0){
+    //             console.log(`getAllReporters value ok`);
+    //             res.status(200).json(`{ err : getAllReporters value fail }`);
+    //         } else {
+    //             console.log(`getAllReporters value fail`);
+    //             res.status(200).json(value);
+    //         }
+    // },
+    //     reason => {
+    //         console.log(`getAllReporters reason fail`);
+    //         res.status(200).json(`{ err : getAllReporters reason fail }`);
+    // });
+    Reporter.find({
+            //age:{$gt:15,$lt:40}
+            //, status:{$in:["A","B"]}
+        }
+        , (err,reporter)=>{
+            if(err){
+                console.log(`err -> ${err}`);
+            } else {
+                res.status(200).json(reporter);
+                console.log(reporter);
+            }
+            //mongoose.disconnect();
+        });
+};
+
 
 /*
 * Gets all israel articles
@@ -117,5 +429,7 @@ exports.getNewsByTitleAndRate = (req,res)=>{
 
 exports.finalize = (json,key,res) => {
     console.log('finalize() was called');
-    res.status(200).json(!json[key].length?{"err":"not found"}:json);
+    // res.status(200).json(!json[key]?{"err":"not found"}:json).end();
+    res.status(200).end(json(!json[key]?{"err":"not found"}:json));
+    //res.status(200).end("{'err':'not found'}");
 };
