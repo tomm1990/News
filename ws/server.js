@@ -14,7 +14,7 @@ const http = require('http'),
 /*
 * app usages
  */
-app.use(express.static(mainRoute))
+app.use(express.static(mainRoute));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
