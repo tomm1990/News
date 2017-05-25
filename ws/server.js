@@ -151,6 +151,23 @@ app.post('/saveNewReporter',controller.saveNewReporter);
 app.get('/getAllReporters',controller.getAllReporters);
 
 /*
+ * Gets all VOD
+ *
+ * @type
+ *   METHOD : get
+ *
+ * @param
+ *   [no params]
+ *
+ * @return
+ *   json
+ *
+ * @i.e
+ *   http://localhost:3000/getAllVOD
+ */
+
+app.get('/getAllVOD',controller.getAllVOD);
+/*
  * Gets all israel articles
  *
  * @type
@@ -166,7 +183,6 @@ app.get('/getAllReporters',controller.getAllReporters);
  *   http://localhost:3000/getAllIsraelNews
  */
 app.get('/getAllIsraelNews', controller.getAllIsraelNews);
-
 
 /*
  * Gets all articles rated over than { rate }
@@ -185,7 +201,6 @@ app.get('/getAllIsraelNews', controller.getAllIsraelNews);
  *   [rate][8]
  */
 app.post('/getNewsByRateBiggerThan',controller.getNewsByRateBiggerThan);
-
 
 /*
  * Gets all articles by title and rate

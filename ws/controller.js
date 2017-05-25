@@ -202,7 +202,10 @@ exports.saveNewVod = (req,res)=> {
 
     newVod.save(
         (err) => {
-            if(err) console.log(`err ${err}`);
+            if(err) {
+                res.status(200).json({ "err" : "wrong input" });
+                return;
+            }
             else {
                 // TODO : fix res.end()
                 res.status(200).json({"ok":"document saved"});
@@ -255,7 +258,10 @@ exports.saveNewReporter = (req,res,next)=> {
 
     newReporter.save(
         (err) => {
-            if(err) console.log(`err ${err}`);
+            if(err) {
+                res.status(200).json({ "err" : "wrong input" });
+                return;
+            }
             else {
                 // TODO : fix res.end()
                 res.status(200).json({"ok":"document saved"});
@@ -304,13 +310,43 @@ exports.getAllReporters = (req,res)=>{
         }
         , (err,reporter)=>{
             if(err){
-                console.log(`err -> ${err}`);
+                res.status(200).json({ "err" : "wrong input" });
+                return;
             } else {
                 res.status(200).json(reporter);
                 console.log(reporter);
             }
             //mongoose.disconnect();
         });
+};
+
+/*
+ * Gets all VOD
+ *
+ * @type
+ *   METHOD : get
+ *
+ * @param
+ *   [no params]
+ *
+ * @return
+ *   json
+ *
+ * @i.e
+ *   http://localhost:3000/getAllVOD
+ */
+exports.getAllVOD = (req,res)=>{
+  Vod.find({},
+      (err,vod)=>{
+        if(err){
+            res.status(200).json({ "err" : "wrong input" });
+            return;
+        } else {
+            res.status(200).json(vod);
+            console.log(vod);
+        }
+      }
+  )
 };
 
 

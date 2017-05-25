@@ -1,64 +1,183 @@
 *{
-    margin:0;
-    padding: 0;
+    padding : 0 ;
+    margin : 0 ; 
 }
 
-body{
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#7d7e7d+0,0e0e0e+64 */
-background: #7d7e7d; /* Old browsers */
-background: -moz-linear-gradient(-45deg, #7d7e7d 0%, #0e0e0e 64%); /* FF3.6-15 */
-background: -webkit-linear-gradient(-45deg, #7d7e7d 0%,#0e0e0e 64%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(135deg, #7d7e7d 0%,#0e0e0e 64%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+body {
+    background: #393939;
+    font-family: sans-serif,arial,tahoma;
+    color : #fff;
+    height : inherit;
 }
 
 #wrapper{
-    font-weight: 100;
-    color : #fff;
-    margin: 0 auto;
-    width: 80%;
-    padding: 3%;
-    box-shadow: 0px 20px 15px 15px #888888;
-    font-family: tahoms, arial;
+    margin: auto;
+    width : 95%;
+    height : 100vh;
 }
 
-header, main, footer , section{
+nav, main ,desc , exs , blockquot {
+    float: left;
+    display: block;
+    height : 100%;
+}
+
+nav{
+    height : 500vh;
+    width : 15%;
+}
+
+nav > #logo{
+    height : 15vh;
+    background: url(/loco.png) no-repeat;
+    background-position: center; 
+    background-size: 60%;
+}
+
+.menu li{
+    font-size: 90%;
+    padding: 5%;
+    transition: 0.15s ease-in;
+    border-bottom: 1px solid #fff;
+}
+
+.menu > ul , .menu > ul a{
+    list-style: none;
+    text-decoration: none;
+    color : #fff;
+}
+
+.menu > ul li:hover {
+    background: #2367af;
+}
+
+main{
+    font-size: 80%;
+    width : 85%;
+}
+
+desc{
+    background: #ecf3f7;
+    width: 52%;
+}
+
+
+section>h1, prop > h1 , prop > p, prop > h2,prop > h3{
+    color : #393939;
+    padding: 4%;
+}
+
+section>h1, prop > h1{
+    background: #fff;
+    border : 1px solid #888787;
+}
+
+prop{
     padding: 3%;
+}
+
+prop > h2{
+    text-decoration: bold;
+    padding: 2%;
+    padding-left: 5%;
+    font-size: 100%;
+}
+
+prop > h3{
+    font-weight: 500;
+    padding: 2%;
+    font-size: 90%;
+    padding-left: 7%;
+}
+
+prop > code{
+    font-size: 110%;
+    background-color: rgba(0,0,0,0.05);
+    color : #393939;
+    padding: 3px;
+    border-radius: 3px;
+    margin-left: 7%;
+}
+
+prop > table{
+    display: block;
+    color: #000;
+    padding: 2% 5% 2% 6%;
+}
+
+table tr{
+    width: 100%;
+}
+
+table td , th{
+/*    width: 7%;*/
+}
+
+table > thead{
+    width: 100%;
+    background-color: #eaf2f6;
+}
+
+thead th, tbody td{
+    padding: 1%;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+table > tbody{
+    padding: 3%;
+}
+
+table > tbody tr:nth-child(2n){
+    background-color: rgba(0,0,0,0.05);
+}
+
+exs{
+    padding: 3%;
+    width : 42%;
+}
+
+blockquote{
+    padding: 3%;
+    background: #1c1c1c;
+    border-radius: 5px;
+}
+
+pre.hjson1{
+    background: url('getAllReporters.png') no-repeat;
+    height : 70%;
+    background-size: 90%;
+    background-position: center; 
+}
+
+pre.hjson2{
+    background: url('getAllVOD.png') no-repeat;
+    height : 70%;
+    background-size: 90%;
+    background-position: center; 
+}
+
+pre.hjson3{
+    background: url('getVodByReporterID.png') no-repeat;
+    height : 70%;
+    background-size: 90%;
+    background-position: center; 
+}
+
+pre.hjson4{
+    background: url('getReporterByVodID.png') no-repeat;
+    height : 70%;
+    background-size: 90%;
+    background-position: center; 
+}
+
+pre.hjson5{
+    background: url('getVodRatedHigherThan.png') no-repeat;
+    height : 70%;
+    background-size: 90%;
+    background-position: center; 
 }
 
 .clear{
-    clear: both;
-}
-
-header{
-    padding: 1%;
-}
-
-header >h2 , hr{
-    color : #4cd481;
-    border-color: #4cd481;
-}
-
-.space{
-    color : #000;
-    margin-left: 2%;
-}
-
-section h1{
-    color : #ffffff;
-}
-
-section h1,h2,h3,p{
-    margin : 2%;
-}
-
-section p{
-    padding: 2%;
-    background: #606060;
-}
-
-section p a{
-    margin-left: 3%;
-    text-decoration: none;
-    color : #4cd481;
+    clear : both;
 }
