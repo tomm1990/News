@@ -224,6 +224,26 @@ app.post('/getNewsByRateBiggerThan',controller.getNewsByRateBiggerThan);
  */
 app.get('/getNewsByTitleAndRate/:title/:rate',controller.getNewsByTitleAndRate);
 
+/*
+ * Gets all articles by title and rate
+ *
+ * @type
+ *   METHOD : get
+ *
+ * @param
+ *   rate  // int value specifies the rate
+ * @return
+ *   [no returns]
+ *
+ * @i.e
+ *   http://localhost:3000/getAllVodXRate/8
+ *
+ *
+ * @nosql injection example
+ *   http://localhost:3000/getAllVodXRate/8;return%20true;
+ */
+app.get('/getAllVodXRate/:rate',controller.getAllVodXRate);
+
 
 app.listen(port , () => {
     console.log('listening to '+port);

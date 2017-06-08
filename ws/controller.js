@@ -463,9 +463,46 @@ exports.getNewsByTitleAndRate = (req,res)=>{
     exports.finalize(jsonObj,key,res);
 };
 
+
+/*
+ * Gets all articles by title and rate
+ *
+ * @type
+ *   METHOD : get
+ *
+ * @param
+ *   rate  // int value specifies the rate
+ * @return
+ *   [no returns]
+ *
+ * @i.e
+ *   http://localhost:3000/getAllVodXRate/8
+ *
+ *
+ * @nosql injection example
+ *   http://localhost:3000/getAllVodXRate/8;return%20true;
+ */
+exports.getAllVodXRate = (req,res)=>{
+    if(!req.params.rate || req.params.rate.length==0) res.status(200).json({"err":"wrong input"});
+    var v = req.params.rate;
+    console.log("v is : "+v);
+    Vod.$where('this.rate > ' + v).exec(function(err,result){
+    //})
+    // Vod.find({
+    //     // rate : v
+    //     rate : { $gt : v }
+    // },(err,result)=>{
+        if(err){
+            res.status(200).json({"err":"wrong input"});
+            return;
+        } else {
+            res.status(200).json(result);
+            console.log(result);
+        }
+    });
+};
+
 exports.finalize = (json,key,res) => {
     console.log('finalize() was called');
-    // res.status(200).json(!json[key]?{"err":"not found"}:json).end();
     res.status(200).end(json(!json[key]?{"err":"not found"}:json));
-    //res.status(200).end("{'err':'not found'}");
 };

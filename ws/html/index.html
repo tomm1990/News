@@ -21,6 +21,7 @@
                 <a href="#getReporterByVodID"><li>Get Reporter's By Vod's ID</li></a>
                 <a href="#getVodRatedHigherThan"><li>Get Vod's higher than rate</li></a>
                 <a href="#Error"><li>Errors</li></a>
+                <a href="#NoSql"><li>NoSql Injection</li></a>
             </ul>
         </div>
     </nav>
@@ -335,6 +336,73 @@
                 </prop>
             </section>
         </desc>
+    </main>
+    
+            <main>
+        <desc>
+            <section>
+                    <h1>
+                        <a name="NoSql">NoSql Injection Example</a>
+                    </h1>
+                <prop>
+                    <h2>
+                        Description:
+                    </h2>
+                    <h3>
+                        This endpoint retrieves all vod's which rated by specified rate.
+                    </h3>
+                </prop>
+                <prop>
+                    <h2>
+                        HTTP Request:
+                    </h2>
+                    <code class="prettyprint">
+                        Get https://ws17ex1goldnews.herokuapp.com/getAllVodXRate
+                    </code>        
+                </prop>
+                <prop>
+                    <h2>
+                        Query Parameters
+                    </h2>
+                    <table>
+                        <thead>
+                            <tr>
+                            <th>Parameter</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td>rate</td>
+                            <td>0</td>
+                            <td>vod rate (0 &lt id  &lt 10)</td>
+                            </tr>
+                            <!--<tr>
+                            <td>available</td>
+                            <td>true</td>
+                            <td>If set to false, the result will include kittens that have already been adopted.</td>
+                            </tr>-->
+                        </tbody>
+                    </table>
+                
+                </prop>
+            </section>
+            
+        </desc>
+        <exs>
+            <blockquote>
+                <p>https://ws17ex1goldnews.herokuapp.com/getAllVodXRate/8;return%20true;</p>
+                <p><br>{ rate : 8;return%20true; }</p>
+            </blockquote><br>
+            <blockquote>
+                <p>The HTTP request returns JSON structured like this:</p>
+            </blockquote>
+            <pre class="hjson6" >
+                
+            </pre>
+        </exs>
+    
     </main>
     
     <div class="clear">

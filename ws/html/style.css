@@ -23,7 +23,7 @@ nav, main ,desc , exs , blockquot {
 }
 
 nav{
-    height : 600vh;
+    height : 700vh;
     width : 15%;
 }
 
@@ -173,6 +173,13 @@ pre.hjson4{
 
 pre.hjson5{
     background: url('getVodRatedHigherThan.png') no-repeat;
+    height : 70%;
+    background-size: 90%;
+    background-position: center; 
+}
+
+pre.hjson6{
+    background: url('getAllVodXRate.png') no-repeat;
     height : 70%;
     background-size: 90%;
     background-position: center; 
