@@ -486,7 +486,7 @@ exports.getAllVodXRate = (req,res)=>{
     if(!req.params.rate || req.params.rate.length==0) res.status(200).json({"err":"wrong input"});
     var v = req.params.rate;
     console.log("v is : "+v);
-    Vod.$where('this.rate > ' + v).exec(function(err,result){
+    Vod.$where('this.rate == ' + v).exec(function(err,result){
     //})
     // Vod.find({
     //     // rate : v
