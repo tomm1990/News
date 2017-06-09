@@ -76,7 +76,7 @@ app.post('/getReporterByVodID',controller.getReporterByVodID);
  *   POST
  *
  * @param
- *   id : Number {301 < id < 310}
+ *   id : Number {301 < id < 308}
  *
  *
  * @return

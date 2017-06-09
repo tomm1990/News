@@ -9,13 +9,9 @@ const data = require('./data/news.json'),
     options = {
         server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
         replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
-    }
-    //reporterObj = new Repo();
+    };
 
-
-// mongoose.Promise = global.Promise;
 mongoose.connect(consts.MLAB_KEY,options);
-// const conn = mongoose.connection;   //get default connection
 
 /*
  * Gets all VOD's rated over {rate} input
@@ -35,6 +31,7 @@ mongoose.connect(consts.MLAB_KEY,options);
  *   [rate][8]
  */
 exports.getVodRatedHigherThan = (req,res)=>{
+    console.log('getVodRatedHigherThan() :: req.body.rate -> '+req.body.rate);
     var _rate = req.body.rate ? req.body.rate : 0;
     if(_rate<=0 || _rate > 15 ) {
         res.status(200).json({ "err" : "wrong input" });
@@ -71,6 +68,7 @@ exports.getVodRatedHigherThan = (req,res)=>{
  *   [id][501]
  */
 exports.getReporterByVodID = (req,res)=>{
+    console.log('getReporterByVodID() :: req.body.id -> '+req.body.id);
     var _vod,
         _id = req.body.id?req.body.id:0;
     if(_id > 505 || _id < 501){
@@ -103,7 +101,6 @@ exports.getReporterByVodID = (req,res)=>{
     });
 };
 
-
 /*
  * Gets all VOD's from a specific reporter id
  *
@@ -111,7 +108,7 @@ exports.getReporterByVodID = (req,res)=>{
  *   POST
  *
  * @param
- *   id : Number {301 < id < 310}
+ *   id : Number {301 < id < 308}
  *
  *
  * @return
@@ -122,9 +119,12 @@ exports.getReporterByVodID = (req,res)=>{
  *   [id][303]
  */
 exports.getVodByReporterID = (req,res)=>{
+    console.log('getVodByReporterID() :: req.body.id -> '+req.body.id);
     var rep,
-     _id = req.body.id?req.body.id:0;
-    if(_id > 310 || _id < 301) {
+     _id = req.body.id?req.body.id:
+         res.status(200).json({ "err" : "wrong input" });
+
+    if(_id > 308 || _id < 301) {
         res.status(200).json({ "err" : "wrong input" });
         return;
     }
@@ -154,7 +154,6 @@ exports.getVodByReporterID = (req,res)=>{
             });
 };
 
-
 /*
  * Save new vod
  *
@@ -180,10 +179,11 @@ exports.getVodByReporterID = (req,res)=>{
  *   [url][http://www.ynetnews.com/articles/0,7340,L-4964681,00.html]
  */
 exports.saveNewVod = (req,res)=> {
-    // console.log(`id : ${req.body.id}`);
-    // console.log(`title : ${req.body.title}`);
-    // console.log(`subTitle : ${req.body.subTitle}`);
-    // console.log(`rate : ${req.body.rate}`);
+    console.log('saveNewVod() :: ');
+    console.log(`id : ${req.body.id}`);
+    console.log(`title : ${req.body.title}`);
+    console.log(`subTitle : ${req.body.subTitle}`);
+    console.log(`rate : ${req.body.rate}`);
     var _id = req.body.id ? req.body.id : exports.finalize(0,0,res) ,
         _title = req.body.title ? req.body.title : exports.finalize(0,0,res) ,
         _subTitle = req.body.subTitle ? req.body.subTitle : exports.finalize(0,0,res) ,
@@ -213,11 +213,10 @@ exports.saveNewVod = (req,res)=> {
                 //next();
                 console.log(`document saved`);
             }
-            mongoose.disconnect();
+            // mongoose.disconnect();
         }
     );
 };
-
 
 /*
  * Save new reporter
@@ -242,6 +241,7 @@ exports.saveNewVod = (req,res)=> {
  *   [age][27]
  */
 exports.saveNewReporter = (req,res,next)=> {
+    console.log('saveNewReporter() :: req.body.id -> '+req.body.id);
     var _id = req.body.id ? req.body.id : exports.finalize(0,0,res) ,
         _name = req.body.name ? req.body.name : exports.finalize(0,0,res) ,
         _proficiency = req.body.proficiency ? req.body.proficiency : exports.finalize(0,0,res) ,
@@ -273,7 +273,6 @@ exports.saveNewReporter = (req,res,next)=> {
     );
 };
 
-
 /*
  * Gets all reporters
  *
@@ -290,20 +289,7 @@ exports.saveNewReporter = (req,res,next)=> {
  *   http://localhost:3000/getAllReporters
  */
 exports.getAllReporters = (req,res)=>{
-    // reporterObj.getAllReporters().then(
-    //     value=> {
-    //         if(value.length<=0){
-    //             console.log(`getAllReporters value ok`);
-    //             res.status(200).json(`{ err : getAllReporters value fail }`);
-    //         } else {
-    //             console.log(`getAllReporters value fail`);
-    //             res.status(200).json(value);
-    //         }
-    // },
-    //     reason => {
-    //         console.log(`getAllReporters reason fail`);
-    //         res.status(200).json(`{ err : getAllReporters reason fail }`);
-    // });
+    console.log('getAllReporters() ::');
     Reporter.find({
             //age:{$gt:15,$lt:40}
             //, status:{$in:["A","B"]}
@@ -316,7 +302,6 @@ exports.getAllReporters = (req,res)=>{
                 res.status(200).json(reporter);
                 console.log(reporter);
             }
-            //mongoose.disconnect();
         });
 };
 
@@ -336,19 +321,18 @@ exports.getAllReporters = (req,res)=>{
  *   http://localhost:3000/getAllVOD
  */
 exports.getAllVOD = (req,res)=>{
-  Vod.find({},
-      (err,vod)=>{
-        if(err){
-            res.status(200).json({ "err" : "wrong input" });
-            return;
-        } else {
-            res.status(200).json(vod);
-            console.log(vod);
-        }
-      }
-  )
+    console.log('getAllVOD() ::');
+    Vod.find({},
+        (err,vod)=>{
+            if(err){
+                res.status(200).json({ "err" : "wrong input" });
+                return;
+            } else {
+                res.status(200).json(vod);
+                console.log(vod);
+            }
+          });
 };
-
 
 /*
 * Gets all israel articles
@@ -366,7 +350,7 @@ exports.getAllVOD = (req,res)=>{
 *   http://localhost:3000/getAllIsraelNews
  */
 exports.getAllIsraelNews = (req,res)=>{
-    console.log('getAllIsraelNews() was called');
+    console.log('getAllIsraelNews() ::');
     var jsonObj = {},
         key = 'Israel News';
     jsonObj[key] = [];
@@ -402,6 +386,7 @@ exports.getAllIsraelNews = (req,res)=>{
  *   [rate][8]
  */
 exports.getNewsByRateBiggerThan = (req,res)=>{
+    console.log('getNewsByRateBiggerThan() :: req.body.rate - >'+req.body.rate);
     var rateToSearch = req.body.rate,
         jsonObj = {},
         key = 'News rate bigger than '+rateToSearch;
@@ -439,6 +424,7 @@ exports.getNewsByRateBiggerThan = (req,res)=>{
  *   http://localhost:3000/getNewsByTitleAndRate/Israel/10
  */
 exports.getNewsByTitleAndRate = (req,res)=>{
+    console.log('getNewsByTitleAndRate() :: req.params.title -> '+req.params.title+', req.params.rate -> '+req.params.rate);
     var title = req.params.title,
         rate = req.params.rate,
         jsonObj = {},
@@ -463,7 +449,6 @@ exports.getNewsByTitleAndRate = (req,res)=>{
     exports.finalize(jsonObj,key,res);
 };
 
-
 /*
  * Gets all articles by title and rate
  *
@@ -483,15 +468,10 @@ exports.getNewsByTitleAndRate = (req,res)=>{
  *   http://localhost:3000/getAllVodXRate/8;return%20true;
  */
 exports.getAllVodXRate = (req,res)=>{
-    if(!req.params.rate || req.params.rate.length==0) res.status(200).json({"err":"wrong input"});
+    console.log('getAllVodXRate() :: req.params.rate -> '+req.params.rate);
     var v = req.params.rate;
-    console.log("v is : "+v);
+    console.log("v is : "+ v );
     Vod.$where('this.rate == ' + v).exec(function(err,result){
-    //})
-    // Vod.find({
-    //     // rate : v
-    //     rate : { $gt : v }
-    // },(err,result)=>{
         if(err){
             res.status(200).json({"err":"wrong input"});
             return;
