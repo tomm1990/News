@@ -1,1 +1,7 @@
-ws/node_modules/
+# dependencies
+/node_modules
+/ws/service/node_modules
+
+
+# IDEs and editors
+/.idea

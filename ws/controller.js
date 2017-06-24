@@ -34,18 +34,17 @@ exports.getVodRatedHigherThan = (req,res)=>{
     console.log('getVodRatedHigherThan() :: req.body.rate -> '+req.body.rate);
     var _rate = req.body.rate ? req.body.rate : 0;
     if(_rate<=0 || _rate > 15 ) {
-        res.status(200).json({ "err" : "wrong input" });
-        return;
+        return res.status(200).json({ "err" : "wrong input" });
     }
     Vod.find({
         rate : { $gt : _rate }
     }, (err,vod) => {
         if(err){
             console.log(`err -> ${err}`);
-            res.status(200).json(`{ err : ${err}`);
+            return res.status(200).json(`{ err : ${err}`);
         } else {
             console.log(vod);
-            res.status(200).json(vod);
+            return res.status(200).json(vod);
         }
     });
 };
@@ -71,16 +70,15 @@ exports.getReporterByVodID = (req,res)=>{
     console.log('getReporterByVodID() :: req.body.id -> '+req.body.id);
     var _vod,
         _id = req.body.id?req.body.id:0;
-    if(_id > 505 || _id < 501){
-        res.status(200).json({ "err" : "wrong input" });
-        return;
+    if(_id > 505 || _id < 501 || isNaN(_id)){
+        return res.status(200).json({ "err" : "wrong input" });
     }
     Vod.find({
         id : _id
     }, (err,vod)=>{
         if(err){
             console.log(`err -> ${err}`);
-            res.status(200).json(`{ err : ${err}`);
+            return res.status(200).json(`{ err : ${err}`);
         } else {
             console.log(vod);
             _vod = vod;
@@ -90,11 +88,11 @@ exports.getReporterByVodID = (req,res)=>{
             }, (err,reporter)=>{
                 if(err) {
                     console.log(`err -> ${err}`);
-                    res.status(200).json(`{ err : ${err}`);
+                    return res.status(200).json(`{ err : ${err}`);
                 }
                 else {
                     console.log(reporter);
-                    res.status(200).json(reporter);
+                    return res.status(200).json(reporter);
                 }
             });
         }
@@ -121,19 +119,17 @@ exports.getReporterByVodID = (req,res)=>{
 exports.getVodByReporterID = (req,res)=>{
     console.log('getVodByReporterID() :: req.body.id -> '+req.body.id);
     var rep,
-     _id = req.body.id?req.body.id:
-         res.status(200).json({ "err" : "wrong input" });
+     _id = req.body.id;
 
-    if(_id > 308 || _id < 301) {
-        res.status(200).json({ "err" : "wrong input" });
-        return;
+    if(_id > 308 || _id < 301 || isNaN(_id)) {
+        return res.status(200).json({ "err" : "wrong input" });
     }
     Reporter.find({
         id : _id
             }, (err,reporter)=>{
                 if(err){
                     console.log(`err -> ${err}`);
-                    res.status(200).json(`{ err : ${err}`);
+                    return res.status(200).json(`{ err : ${err}`);
                 } else {
                     console.log(reporter);
                     rep = reporter;
@@ -143,11 +139,11 @@ exports.getVodByReporterID = (req,res)=>{
                     }, (err,vod)=>{
                         if(err) {
                             console.log(`err -> ${err}`);
-                            res.status(200).json(`{ err : ${err}`);
+                            return res.status(200).json(`{ err : ${err}`);
                         }
                         else {
                             console.log(vod);
-                            res.status(200).json(vod);
+                            return res.status(200).json(vod);
                         }
                     });
                 }
@@ -203,12 +199,11 @@ exports.saveNewVod = (req,res)=> {
     newVod.save(
         (err) => {
             if(err) {
-                res.status(200).json({ "err" : "wrong input" });
-                return;
+                return res.status(200).json({ "err" : "wrong input" });
             }
             else {
                 // TODO : fix res.end()
-                res.status(200).json({"ok":"document saved"});
+                return res.status(200).json({"ok":"document saved"});
                 //res.end();
                 //next();
                 console.log(`document saved`);
@@ -325,8 +320,7 @@ exports.getAllVOD = (req,res)=>{
     Vod.find({},
         (err,vod)=>{
             if(err){
-                res.status(200).json({ "err" : "wrong input" });
-                return;
+                return res.status(200).json({ "err" : "wrong input" });
             } else {
                 res.status(200).json(vod);
                 console.log(vod);
@@ -386,26 +380,36 @@ exports.getAllIsraelNews = (req,res)=>{
  *   [rate][8]
  */
 exports.getNewsByRateBiggerThan = (req,res)=>{
+    if(isNaN(req.body.rate)||req.body.rate<0){
+        return res.status(404).json({ "err" : "wrong input" });
+    }
     console.log('getNewsByRateBiggerThan() :: req.body.rate - >'+req.body.rate);
     var rateToSearch = req.body.rate,
         jsonObj = {},
         key = 'News rate bigger than '+rateToSearch;
-    jsonObj[key] = [];
-    console.log('getNewsByRateBiggerThan() was called');
-    console.log('-- param[0] : '+rateToSearch);
-    for(let i in data.news){
-        if(data.news[i].rate>rateToSearch){
-            jsonObj[key].push({
-                "id" : data.news[i].id,
-                "title" : "Israel",
-                "lastArticle" : data.news[i].lastArticle,
-                "subTitle" : data.news[i].subTitle,
-                "writer" : data.news[i].writer,
-                "rate" : data.news[i].rate
-            });
-        }
-    }
-    exports.finalize(jsonObj,key,res);
+    Vod.find({
+        rate : { $gt : rateToSearch }
+    },(err,results)=>{
+        if(err)
+            return res.status(404).json({ "err" : "wrong input" });
+        return res.status(200).json(results);
+    });
+    // jsonObj[key] = [];
+    // console.log('getNewsByRateBiggerThan() was called');
+    // console.log('-- param[0] : '+rateToSearch);
+    // for(let i in data.news){
+    //     if(data.news[i].rate>rateToSearch){
+    //         jsonObj[key].push({
+    //             "id" : data.news[i].id,
+    //             "title" : "Israel",
+    //             "lastArticle" : data.news[i].lastArticle,
+    //             "subTitle" : data.news[i].subTitle,
+    //             "writer" : data.news[i].writer,
+    //             "rate" : data.news[i].rate
+    //         });
+    //     }
+    // }
+    // exports.finalize(jsonObj,key,res);
 };
 
 /*
@@ -425,28 +429,38 @@ exports.getNewsByRateBiggerThan = (req,res)=>{
  */
 exports.getNewsByTitleAndRate = (req,res)=>{
     console.log('getNewsByTitleAndRate() :: req.params.title -> '+req.params.title+', req.params.rate -> '+req.params.rate);
-    var title = req.params.title,
-        rate = req.params.rate,
-        jsonObj = {},
-        key = 'Title '+title+' AND rate '+rate;
-    jsonObj[key] = [];
-    console.log('getNewsByTitleAndRate() was called');
-    console.log('-- param[0] : '+title);
-    console.log('-- param[1] : '+rate);
-    for(let i in data.news){
-        if(data.news[i].rate==rate
-            && data.news[i].title==title){
-            jsonObj[key].push({
-                "id" : data.news[i].id,
-                "title" : "Israel",
-                "lastArticle" : data.news[i].lastArticle,
-                "subTitle" : data.news[i].subTitle,
-                "writer" : data.news[i].writer,
-                "rate" : data.news[i].rate
-            });
-        }
-    }
-    exports.finalize(jsonObj,key,res);
+    var _title = req.params.title,
+        _rate = req.params.rate,
+        // jsonObj = {},
+        key = 'Title '+_title+' AND rate '+_rate;
+    if(isNaN(_rate))
+        return res.status(404).json({ "err" : "wrong input" });
+    Vod.find({
+        rate : _rate,
+        title : _title
+    },(err,results)=>{
+        if(err)
+            return res.status(404).json({ "err" : "wrong input" });
+        return res.status(200).json(results);
+    });
+    // jsonObj[key] = [];
+    // console.log('getNewsByTitleAndRate() was called');
+    // console.log('-- param[0] : '+title);
+    // console.log('-- param[1] : '+rate);
+    // for(let i in data.news){
+    //     if(data.news[i].rate==rate
+    //         && data.news[i].title==title){
+    //         jsonObj[key].push({
+    //             "id" : data.news[i].id,
+    //             "title" : "Israel",
+    //             "lastArticle" : data.news[i].lastArticle,
+    //             "subTitle" : data.news[i].subTitle,
+    //             "writer" : data.news[i].writer,
+    //             "rate" : data.news[i].rate
+    //         });
+    //     }
+    // }
+    // exports.finalize(jsonObj,key,res);
 };
 
 /*
